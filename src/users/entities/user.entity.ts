@@ -92,9 +92,9 @@ export class User extends BaseEntity {
   @ApiProperty()
   emailAddressVerificationCode: string;
 
-  @Column({ nullable: true })
+  @Column({ select: false, nullable: true })
   @ApiProperty()
-  phoneNumberVerificationCode: string;
+  authConfirmToken: string;
 
   @Column({ default: 'KE' })
   @ApiProperty()

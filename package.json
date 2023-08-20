@@ -22,10 +22,12 @@
   "dependencies": {
     "@nestjs-modules/mailer": "^1.9.1",
     "@nestjs/common": "^9.0.0",
+    "@nestjs/config": "^3.0.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/jwt": "^10.1.0",
     "@nestjs/passport": "^10.0.0",
     "@nestjs/platform-express": "^9.0.0",
+    "@nestjs/swagger": "^7.1.8",
     "@nestjs/typeorm": "^10.0.0",
     "bcrypt": "^5.1.1",
     "hbs": "^4.2.0",
