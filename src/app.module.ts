@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/entities/user.entity';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -11,11 +12,11 @@ import { User } from './users/entities/user.entity';
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
-      username: 'postgres',
-      password: 'authentication',
-      database: 'authentication',
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
       entities: [User],
-      synchronize: true,
+      synchronize: false,
     }),
     TypeOrmModule.forFeature([User]),
   ],
