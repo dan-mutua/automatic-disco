@@ -14,7 +14,7 @@ import { User } from './entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
 
 @Controller()
-export class AppController {
+export class UserController {
   constructor(
     private readonly userService: UserService,
     private jwtService: JwtService,
@@ -22,10 +22,12 @@ export class AppController {
 
   @Get()
   @Render('index')
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   root() {}
 
   @Get('/verify')
   @Render('verify')
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   VarifyEmail() {}
 
   @Post('/signup')

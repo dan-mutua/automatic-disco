@@ -1,9 +1,12 @@
 import { ConfigModule } from '@nestjs/config';
+import { Module } from '@nestjs/common';
+import { UserController } from './users.controller';
+import { UserService } from './services/users.service';
 import { JwtModule } from '@nestjs/jwt';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { join } from 'path';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
-import { Global, Module } from '@nestjs/common';
+import { Global } from '@nestjs/common';
 
 @Global()
 @Module({
@@ -36,7 +39,7 @@ import { Global, Module } from '@nestjs/common';
   ],
   controllers: [UserController],
 
-  providers: [UserService, ...usersProviders, MailService],
+  providers: [UserService],
   exports: [UserService],
 })
 export class UsersModule {}
