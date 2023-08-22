@@ -8,6 +8,7 @@ import { join } from 'path';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { Global } from '@nestjs/common';
 
+
 @Global()
 @Module({
   imports: [
