@@ -21,12 +21,12 @@ import { Global } from '@nestjs/common';
         service: 'gmail',
         secure: false,
         auth: {
-          user: 'your email address',
-          pass: 'your email password',
+          user: process.env.USER_EMAIL,
+          pass: process.env.EMAIL_PASS,
         },
       },
       defaults: {
-        from: '"No Reply" <youremail@gmail.com>',
+        from: '"No Reply" noreply@gmail.com',
       },
       template: {
         dir: join(__dirname, '../views/email-templates'),
