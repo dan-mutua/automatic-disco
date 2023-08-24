@@ -1,23 +1,27 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus, Inject } from '@nestjs/common';
 import { User } from '../entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { MailerService } from '@nestjs-modules/mailer';
+import { USER_REPOSITORY } from '../index';
+import { CreateUserDto } from '../dtos/create-user.dto';
+import { CredentialsDto } from '../dtos/credentials.dto';
 
 @Injectable()
 export class UserService {
   private code;
 
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>,
+    @Inject(USER_REPOSITORY)
+    private readonly userRepository: typeof User,
     private mailerService: MailerService,
   ) {
     this.code = Math.floor(10000 + Math.random() * 90000);
   }
 
-  async signup(user: User): Promise<any> {
+  async signup(user: CreateUserDto): Promise<any> {
     try {
       const salt = await bcrypt.genSalt();
       const hash = await bcrypt.hash(user.password, salt);
@@ -35,7 +39,7 @@ export class UserService {
     }
   }
 
-  async signin(user: User, jwt: JwtService): Promise<any> {
+  async signin(user: CredentialsDto, jwt: JwtService): Promise<any> {
     try {
       const foundUser = await this.userRepository.findOne({
         where: { email: user.email },

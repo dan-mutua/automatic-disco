@@ -7,7 +7,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { join } from 'path';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { Global } from '@nestjs/common';
-
+import { usersProviders } from './users.providers';
 
 @Global()
 @Module({
@@ -40,7 +40,7 @@ import { Global } from '@nestjs/common';
   ],
   controllers: [UserController],
 
-  providers: [UserService],
+  providers: [...usersProviders, UserService],
   exports: [UserService],
 })
 export class UsersModule {}

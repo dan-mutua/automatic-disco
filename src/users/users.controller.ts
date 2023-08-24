@@ -12,8 +12,12 @@ import {
 import { UserService } from './services/users.service';
 import { User } from './entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
+import { CreateUserDto } from './dtos/create-user.dto';
+import { ApiTags, ApiResponse, ApiBody, ApiParam } from '@nestjs/swagger';
+import { CredentialsDto } from './dtos/credentials.dto';
 
 @Controller()
+@ApiTags('Users')
 export class UserController {
   constructor(
     private readonly userService: UserService,
@@ -21,30 +25,41 @@ export class UserController {
   ) {}
 
   @Get()
+  @ApiResponse({ status: 200, description: 'Render the index page.' })
   @Render('index')
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   root() {}
 
   @Get('/verify')
+  @ApiResponse({ status: 200, description: 'Render the verification page.' })
   @Render('verify')
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   VarifyEmail() {}
 
+  @ApiBody({ type: CreateUserDto })
+  @ApiResponse({ status: 201, description: 'User registered successfully.' })
   @Post('/signup')
-  async Signup(@Body() user: User) {
+  async Signup(@Body() user: CreateUserDto) {
     return await this.userService.signup(user);
   }
 
+  @ApiBody({ type: CredentialsDto })
+  @ApiResponse({ status: 200, description: 'User signed in successfully.' })
   @Post('/signin')
-  async Signin(@Body() user: User) {
+  async Signin(@Body() user: CredentialsDto) {
     return await this.userService.signin(user, this.jwtService);
   }
 
+  @ApiBody({ type: Object })
+  @ApiResponse({ status: 200, description: 'Account verified successfully.' })
   @Post('/verify')
   async Varify(@Body() body) {
     return await this.userService.verifyAccount(body.code);
   }
 
+  @ApiParam({ name: 'id', type: 'number' })
+  @ApiResponse({ status: 200, description: 'User found.' })
+  @ApiResponse({ status: 404, description: 'User not found.' })
   @Get('/:id')
   async getOneUser(@Res() response, @Param() param) {
     const user = await this.userService.getOne(param.id);

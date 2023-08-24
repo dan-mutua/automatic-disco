@@ -45,75 +45,77 @@ export class CreateUserDto {
   passwordConfirmation: string;
 
   @IsNotEmpty({})
-  @ApiProperty({ type: String})
+  @ApiProperty({ type: String })
   firstName: string;
 
-  @ApiProperty({ type: String})
+  @ApiProperty({ type: String })
   middleName?: string;
 
   @IsNotEmpty({})
-  @ApiProperty({ type: String})
+  @ApiProperty({ type: String })
   lastName: string;
 
-  @ApiProperty({ type: Date})
+  @ApiProperty({ type: Date })
   dateOfBirth?: Date;
 
   @IsNotEmpty({})
-  @ApiProperty({ enum: ['MALE', 'FEMALE','OTHER','UNKNOWN', 'NOT SPECIFIED']})
+  @ApiProperty({
+    enum: ['MALE', 'FEMALE', 'OTHER', 'UNKNOWN', 'NOT SPECIFIED'],
+  })
   gender: UserGender;
 
-  @ApiProperty({ type: String})
+  @ApiProperty({ type: String })
   phone?: string;
 
   @IsNotEmpty({})
-  @ApiProperty({ type: String})
+  @ApiProperty({ type: String })
   username: string;
 
-  @ApiProperty({ type: String})
+  @ApiProperty({ type: String })
   passwordResetCode?: string;
 
   @ApiProperty({ type: String })
   passwordResetLink?: string;
 
-  @ApiProperty({ type: Date})
+  @ApiProperty({ type: Date })
   passwordResetTime?: Date;
 
-  @ApiProperty({ type: Date})
+  @ApiProperty({ type: Date })
   passwordChangedTime?: Date;
 
-  @ApiProperty({ type: String})
+  @ApiProperty({ type: String })
   securityPin?: string;
 
-  @ApiProperty({ type: String})
+  @ApiProperty({ type: String })
   emailAddressVerificationCode?: string;
 
-  @ApiProperty({ type: String})
+  @ApiProperty({ type: String })
   phoneNumberVerificationCode?: string;
 
   @IsNotEmpty({})
-  @ApiProperty({ type: String})
+  @ApiProperty({ type: String })
   countryCode: string;
 
   @IsNotEmpty({})
-  @ApiProperty({ type: String})
+  @ApiProperty({ type: String })
   countryName: string;
 
   @IsNotEmpty({})
-  @ApiProperty({ type: String})
+  @ApiProperty({ type: String })
   timezoneName: string;
 
   @IsNotEmpty({})
-  @ApiProperty({ type: String})
+  @ApiProperty({ type: String })
   timezoneOffsetSeconds: number;
 
-  @ApiProperty({ type: Date})
+  @ApiProperty({ type: Date })
   lastSeenTime?: Date;
 
-  @ApiProperty({ type: Date})
+  @ApiProperty({ type: Date })
   lastLoginTime?: Date;
 
   @ApiProperty({
-    enum: [ 'SUPERUSER', 'ADMIN', 'USER']
+    enum: ['SUPERUSER', 'ADMIN', 'USER'],
   })
   type: UserType;
 
@@ -121,7 +123,7 @@ export class CreateUserDto {
   @ApiProperty({ enum: ['ACTIVE', 'SUSPENDED', 'INACTIVE', 'BLOCKED'] })
   status: UserStatus;
 
-  @ApiProperty({ type : Date })
+  @ApiProperty({ type: Date })
   createdAt?: Date;
 
   @ApiProperty({ type: Date })
