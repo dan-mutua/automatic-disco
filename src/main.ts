@@ -21,6 +21,17 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('docs', app, document);
 
-  await app.listen(3000);
+  app.enableCors({
+    origin: ['http://localhost:3000'],
+    methods: ['GET', 'PUT', 'PATCH', 'POST', 'OPTIONS', 'DELETE'],
+    optionsSuccessStatus: 204,
+  });
+
+  // await app.listen(3000);
+  try {
+    await app.listen(3000);
+  } catch (error) {
+    console.error('An error occurred while starting the app:', error);
+  }
 }
 bootstrap();

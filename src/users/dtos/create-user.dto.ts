@@ -48,9 +48,6 @@ export class CreateUserDto {
   @ApiProperty({ type: String })
   firstName: string;
 
-  @ApiProperty({ type: String })
-  middleName?: string;
-
   @IsNotEmpty({})
   @ApiProperty({ type: String })
   lastName: string;
@@ -91,14 +88,6 @@ export class CreateUserDto {
 
   @ApiProperty({ type: String })
   phoneNumberVerificationCode?: string;
-
-  @IsNotEmpty({})
-  @ApiProperty({ type: String })
-  countryCode: string;
-
-  @IsNotEmpty({})
-  @ApiProperty({ type: String })
-  countryName: string;
 
   @IsNotEmpty({})
   @ApiProperty({ type: String })
