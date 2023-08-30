@@ -81,10 +81,6 @@ export class User extends BaseEntity {
   @ApiProperty()
   passwordChangedTime: Date;
 
-  @Column({ nullable: true })
-  @ApiProperty()
-  securityPin: string;
-
   @Column({ default: false })
   public isEmailConfirmed: boolean;
 
@@ -104,14 +100,6 @@ export class User extends BaseEntity {
   @ApiProperty()
   countryName: string;
 
-  @Column({ default: 'UTC' })
-  @ApiProperty()
-  timezoneName: string;
-
-  @Column({ default: 0 })
-  @ApiProperty()
-  timezoneOffsetSeconds: number;
-
   @Column({ nullable: true })
   @ApiProperty()
   lastSeenTime: Date;
@@ -121,19 +109,12 @@ export class User extends BaseEntity {
   lastLoginTime: Date;
 
   @ApiProperty()
-  @Column({ default: 'USER' })
-  role: 'SUPERUSER' | 'ADMIN' | 'SCOUT' | 'USER';
-
-  // @Column({ nullable: true })
-  // type: string;
-  // status: 'ACTIVE' | 'INACTIVE' | 'SUSPENDED' | 'BLOCK' | 'undefined';
-
-  @ApiProperty()
-  @Column({
-    default: 'ACTIVE',
-    enum: ['ACTIVE', 'INACTIVE', 'SUSPENDED', 'BLOCK', 'undefined'],
-  })
-  status: string;
+  @Column({ default: 'normalUser' })
+  role:
+    | 'regionalAdmin'
+    | 'countryAdmin'
+    | 'tradersAndPrivateUser'
+    | 'normalUser';
 
   @ApiProperty()
   @Column({ type: 'timestamp', default: () => 'now()' })

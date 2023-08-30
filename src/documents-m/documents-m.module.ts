@@ -4,6 +4,6 @@ import { DocumentsMController } from './documents-m.controller';
 
 @Module({
   controllers: [DocumentsMController],
-  providers: [DocumentsMService]
+  providers: [DocumentsMService],
 })
 export class DocumentsMModule {}
