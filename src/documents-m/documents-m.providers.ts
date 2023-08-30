@@ -2,7 +2,7 @@ import { Connection } from 'typeorm';
 import { DocumentsM } from './entities/documents-m.entity';
 import { DocumentsMService } from './documents-m.service';
 
-export const farmProviders = [
+export const docProviders = [
   DocumentsMService,
   {
     provide: 'DOCUMENT_REPOSITORY',

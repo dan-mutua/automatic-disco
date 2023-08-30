@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DocumentsM } from './entities/documents-m.entity';
-import { Repository } from 'typeorm';
+import { Repository, DeleteResult } from 'typeorm';
 
 @Injectable()
 export class DocumentsMService {
@@ -14,26 +14,19 @@ export class DocumentsMService {
     documentsM.documentName = createDocumentsMDto.documentName;
     documentsM.documentType = createDocumentsMDto.documentType;
     documentsM.documentSrc = createDocumentsMDto.documentSrc;
-    documentsM.userId = createDocumentsMDto.userId;
     documentsM.status = createDocumentsMDto.status;
     documentsM.country = createDocumentsMDto.country;
 
     return await this.documentsRepository.save(documentsM);
   }
 
-  // async findAll(queryParams?: QueryStringParams): Promise<DocumentsM[]> {
-  //   return await this.documentsRepository.find({
-  //     where: queryParams,
-  //   });
-  // }
-
-  async findAll(): Promise<DocumentsM[]> {
+  public async findAll(): Promise<DocumentsM[]> {
     return this.documentsRepository.find({
       relations: ['user', 'country', 'documentType', 'documentName'],
     });
   }
 
-  async findOne(id: number): Promise<DocumentsM> {
+  public async findOne(id: number): Promise<DocumentsM> {
     return this.documentsRepository.findOne({
       where: {
         id,
@@ -55,5 +48,9 @@ export class DocumentsMService {
     return await this.documentsRepository.findOne({
       where: { id },
     });
+  }
+
+  public async delete(id: number): Promise<DeleteResult> {
+    return await this.documentsRepository.delete(id);
   }
 }

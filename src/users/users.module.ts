@@ -8,10 +8,12 @@ import { join } from 'path';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { Global } from '@nestjs/common';
 import { usersProviders } from './users.providers';
+import { DatabaseModule } from 'src/database/database.module';
 
 @Global()
 @Module({
   imports: [
+    DatabaseModule,
     ConfigModule.forRoot(),
     JwtModule.register({
       secret: process.env.JWT_SECRET,

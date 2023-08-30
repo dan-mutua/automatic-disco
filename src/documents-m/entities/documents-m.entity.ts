@@ -35,10 +35,6 @@ export class DocumentsM {
 
   @ApiProperty()
   @Column()
-  userId: number | string;
-
-  @ApiProperty()
-  @Column()
   status: boolean;
 
   @ApiProperty()
