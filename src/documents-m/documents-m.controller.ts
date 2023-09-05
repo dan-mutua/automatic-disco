@@ -6,10 +6,14 @@ import {
   Patch,
   Param,
   Delete,
+  Request,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { DocumentsMService } from './documents-m.service';
-import { CreateDocumentsMDto } from './dto/create-documents-m.dto';
-import { UpdateDocumentsMDto } from './dto/update-documents-m.dto';
+import { extname } from 'path';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
 import { DocumentsM } from './entities/documents-m.entity';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 
@@ -24,12 +28,40 @@ export class DocumentsMController {
   // @Roles(UserRole.ADMIN, UserRole.SUPERUSER)
   @ApiResponse({
     status: 201,
-    description: 'Creates a new farm',
+    description: 'Creates a new docs ',
     type: DocumentsM,
   })
-  create(@Body() createDocumentsM: DocumentsM) {
-    return this.documentsMService.create(createDocumentsM);
+  //   async uploadDocument(@UploadedFile() file: any) {
+  //     await this.documentsMService.uploadDocument(file);
+  //     return {
+  //       success: true,
+  //     };
+  //   }
+  // }
+  @UseInterceptors(
+    FileInterceptor('postDocs', {
+      storage: diskStorage({
+        destination: './files',
+        filename: (req, file, cb) => {
+          const randomName = Array(32)
+            .fill(null)
+            .map(() => Math.round(Math.random() * 16).toString(16))
+            .join('');
+          cb(null, `${randomName}${extname(file.originalname)}`);
+        },
+      }),
+    }),
+  )
+  createPost(
+    @Request() req,
+    @Body() post: DocumentsM,
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<DocumentsM> {
+    return this.documentsMService.createPost(req.user, post, file);
   }
+  // create(@Body() createDocumentsM: DocumentsM) {
+  //   return this.documentsMService.create(createDocumentsM);
+  // }
 
   @Get()
   // @Roles(UserRole.SCOUT, UserRole.ADMIN, UserRole.SUPERUSER, UserRole.USER)

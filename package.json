@@ -11,7 +11,7 @@
     "postbuild": "copy views/email-templates/confirm.hbs dist/ && copy public/* dist/public",
     "start:prod": "node dist/main.js",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "nest start",
+    "start": "nest start   copy views/email-templates/confirm.hbs dist/ && copy public/* dist/public",
     "start:debug": "nest start --debug --watch",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
