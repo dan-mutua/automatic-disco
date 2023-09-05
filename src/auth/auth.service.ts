@@ -5,12 +5,13 @@ import { MailerService } from '@nestjs-modules/mailer';
 import { UserService } from '../users/services/users.service';
 import { USER_REPOSITORY } from 'src/users';
 import { User } from 'src/users/entities/user.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class AuthService {
   constructor(
     @Inject(USER_REPOSITORY)
-    private readonly userRepository: typeof User,
+    private readonly userRepository: Repository<User>,
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
     private mailerService: MailerService,
@@ -84,7 +85,10 @@ export class AuthService {
       await this.sendConfirmedEmail(user);
       return true;
     } catch (e) {
-      return new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
+      return new HttpException(
+        e.errorMessage,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 

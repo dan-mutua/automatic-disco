@@ -15,7 +15,7 @@ export class UserService {
 
   constructor(
     @Inject(USER_REPOSITORY)
-    private readonly userRepository: typeof User,
+    private readonly userRepository: Repository<User>,
     private mailerService: MailerService,
   ) {
     this.code = Math.floor(10000 + Math.random() * 90000);
@@ -30,12 +30,17 @@ export class UserService {
         email: user.email,
         password: hash,
         authConfirmToken: this.code,
+        salt,
       };
-      const newUser = this.userRepository.insert(reqBody);
+      const newUser = this.userRepository.insert({ ...user, ...reqBody });
       await this.sendConfirmationEmail(reqBody);
       return true;
     } catch (e) {
-      return new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
+      // console.log(e);
+      return new HttpException(
+        e.errorMessage,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -68,7 +73,10 @@ export class UserService {
         HttpStatus.UNAUTHORIZED,
       );
     } catch (e) {
-      return new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
+      return new HttpException(
+        e.errorMessage,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -116,7 +124,11 @@ export class UserService {
       await this.sendConfirmedEmail(user);
       return true;
     } catch (e) {
-      return new HttpException(e, HttpStatus.INTERNAL_SERVER_ERROR);
+      // console.log(e);
+      return new HttpException(
+        e.errorMessage,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -124,6 +136,6 @@ export class UserService {
     return this.userRepository.findOne({ where: { email } });
   }
   async findOneByEmail(email: string): Promise<User> {
-    return await this.userRepository.findOne<User>({ where: { email } });
+    return await this.userRepository.findOne({ where: { email } });
   }
 }
