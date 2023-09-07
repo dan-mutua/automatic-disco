@@ -9,6 +9,7 @@ import {
   Request,
   UploadedFile,
   UseInterceptors,
+  Query,
 } from '@nestjs/common';
 import { DocumentsMService } from './documents-m.service';
 import { extname } from 'path';
@@ -71,8 +72,11 @@ export class DocumentsMController {
     description: 'Returns an array of all documents details',
     type: [DocumentsM],
   })
-  findAll() {
-    return this.documentsMService.findAll();
+  // findAll() {
+  //   return this.documentsMService.findAll();
+  // }
+  async findAll(@Query() query: any): Promise<DocumentsM[]> {
+    return this.documentsMService.findAll(query);
   }
 
   @Get(':id')

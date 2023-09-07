@@ -17,16 +17,10 @@ export class QueryStringParams {
   documentSrc?: string;
 
   @ApiProperty({ required: false })
-  userId?: number | string;
-
-  @ApiProperty({ required: false })
   status?: boolean;
 
   @ApiProperty({ required: false })
   country?: countryCode;
-
-  @ApiProperty({ required: false })
-  user?: User;
 
   @ApiProperty({ required: false })
   createdAt?: Date;

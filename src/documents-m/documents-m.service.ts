@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { DocumentsM } from './entities/documents-m.entity';
 import { Repository, DeleteResult } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
+import { QueryStringParams } from './dto/filter-documents.dto';
 
 @Injectable()
 export class DocumentsMService {
@@ -11,10 +12,11 @@ export class DocumentsMService {
   ) {}
 
   async createPost(
-    user: User,
+    user: User['id'],
     post: DocumentsM,
     file: Express.Multer.File,
   ): Promise<DocumentsM> {
+    console.log(file);
     return await this.documentsRepository.save({
       ...post,
       imgUrl: `/files/${file.filename}`,
@@ -26,14 +28,20 @@ export class DocumentsMService {
     return `This action removes a #${path} document`;
   }
 
-  public async findAll(): Promise<DocumentsM[]> {
-    return this.documentsRepository.find({
-      relations: ['user', 'country', 'documentType', 'documentName'],
+  // public async findAll(): Promise<DocumentsM[]> {
+  //   return this.documentsRepository.find({
+  //     relations: ['user', 'country', 'documentType', 'documentName'],
+  //   });
+  // }
+  // queryFilter = (doc: DocumentsM) => {
+  //   return { where: { user: doc.user } };
+  // };
+
+  public async findAll(queryParams?: QueryStringParams): Promise<DocumentsM[]> {
+    return await this.documentsRepository.find({
+      where: queryParams,
     });
   }
-  queryFilter = (doc: DocumentsM) => {
-    return { where: { user: doc.user } };
-  };
 
   // async findLoginedAllDocs(user: User): Promise<DocumentsM[]> {
   //   return await this.documentsRepository.find( where: { user });

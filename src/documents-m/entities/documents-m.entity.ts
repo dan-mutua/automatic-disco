@@ -47,5 +47,5 @@ export class DocumentsM {
 
   @ApiProperty()
   @Column(() => User)
-  user: User;
+  user: User['id'];
 }
