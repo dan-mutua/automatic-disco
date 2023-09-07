@@ -21,6 +21,10 @@ export class UserService {
     this.code = Math.floor(10000 + Math.random() * 90000);
   }
 
+  async findAll(): Promise<User[]> {
+    return await this.userRepository.find();
+  }
+
   async signup(user: CreateUserDto): Promise<any> {
     try {
       const salt = await bcrypt.genSalt();
@@ -130,6 +134,10 @@ export class UserService {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
+  }
+
+  async findOne(id: number): Promise<User> {
+    return await this.userRepository.findOne({ where: { id } });
   }
 
   async getOne(email): Promise<User> {

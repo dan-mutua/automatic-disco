@@ -16,7 +16,7 @@ import { CreateUserDto } from './dtos/create-user.dto';
 import { ApiTags, ApiResponse, ApiBody, ApiParam } from '@nestjs/swagger';
 import { CredentialsDto } from './dtos/credentials.dto';
 
-@Controller()
+@Controller('user')
 @ApiTags('Users')
 export class UserController {
   constructor(
@@ -24,11 +24,20 @@ export class UserController {
     private jwtService: JwtService,
   ) {}
 
+  // @Get()
+  // @ApiResponse({ status: 200, description: 'Render the index page.' })
+  // @Render('index')
+  // // eslint-disable-next-line @typescript-eslint/no-empty-function
+  // root() {}
   @Get()
-  @ApiResponse({ status: 200, description: 'Render the index page.' })
-  @Render('index')
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  root() {}
+  @ApiResponse({
+    status: 200,
+    description: 'Returns an array of users',
+    type: [User],
+  })
+  async findAll(): Promise<User[]> {
+    return this.userService.findAll();
+  }
 
   @Get('/verify')
   @ApiResponse({ status: 200, description: 'Render the verification page.' })
@@ -57,14 +66,26 @@ export class UserController {
     return await this.userService.verifyAccount(body.code);
   }
 
-  @ApiParam({ name: 'id', type: 'number' })
-  @ApiResponse({ status: 200, description: 'User found.' })
-  @ApiResponse({ status: 404, description: 'User not found.' })
-  @Get('/:id')
-  async getOneUser(@Res() response, @Param() param) {
-    const user = await this.userService.getOne(param.id);
-    return response.status(HttpStatus.CREATED).json({
-      user,
-    });
+  // @ApiParam({ name: 'id', type: 'number' })
+  // @ApiResponse({ status: 200, description: 'User found.' })
+  // @ApiResponse({ status: 404, description: 'User not found.' })
+  // @Get('/:id')
+  // async getOneUser(@Res() response, @Param() param) {
+  //   const user = await this.userService.getOne(param.id);
+  //   return response.status(HttpStatus.CREATED).json({
+  //     user,
+  //   });
+  // }
+
+  @Get(':id')
+  @ApiResponse({
+    status: 200,
+    description: 'get all users',
+    type: User,
+  })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  async findOne(@Param('id') id: string): Promise<User> {
+    return this.userService.findOne(+id);
   }
 }

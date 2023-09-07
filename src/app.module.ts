@@ -6,6 +6,10 @@ import { DatabaseModule } from './database/database.module';
 import { SwaggerModule } from '@nestjs/swagger';
 import { DocumentsMModule } from './documents-m/documents-m.module';
 import { AuthModule } from './auth/auth.module';
+import { NotificationsModule } from './notifications/notifications.module';
+import { BullModule } from '@nestjs/bull';
+import { NotificationQueueService } from './notifications/notification.queue';
+import { NotificationWorker } from './notifications/notification.worker';
 
 @Module({
   imports: [
@@ -14,8 +18,12 @@ import { AuthModule } from './auth/auth.module';
     SwaggerModule,
     DocumentsMModule,
     AuthModule,
+    NotificationsModule,
+    BullModule.registerQueue({
+      name: 'notifications',
+    }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, NotificationQueueService, NotificationWorker],
 })
 export class AppModule {}
