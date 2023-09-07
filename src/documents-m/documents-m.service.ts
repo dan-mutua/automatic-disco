@@ -3,24 +3,29 @@ import { DocumentsM } from './entities/documents-m.entity';
 import { Repository, DeleteResult } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { QueryStringParams } from './dto/filter-documents.dto';
+import { UserService } from 'src/users/services/users.service';
 
 @Injectable()
 export class DocumentsMService {
   constructor(
     @Inject('DOCUMENT_REPOSITORY')
     private documentsRepository: Repository<DocumentsM>,
+    private userService: UserService,
   ) {}
 
   async createPost(
-    user: User['id'],
+    userId: string | number,
     post: DocumentsM,
     file: Express.Multer.File,
   ): Promise<DocumentsM> {
+    // post.userId = User.id;
     console.log(file);
+    // const user = await this.userService.findOne(userId);
+
     return await this.documentsRepository.save({
       ...post,
       imgUrl: `/files/${file.filename}`,
-      user,
+      userId,
     });
   }
 
