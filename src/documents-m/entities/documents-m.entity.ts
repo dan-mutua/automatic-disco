@@ -1,7 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional } from 'class-validator';
+import { IsInt, IsOptional } from 'class-validator';
 
 export enum countryCode {
   KE = 'Kenya',
@@ -46,13 +52,16 @@ export class DocumentsM {
   @Column({ nullable: true })
   country: countryCode;
 
-  @ApiProperty()
-  @Column(() => User)
-  user: User['id'];
-
   // @ApiProperty()
-  // @Column({ nullable: true }) // Set the nullable option to true in the @Column decorator
-  // @IsOptional() // Use the @IsOptional() decorator
-  // @ManyToOne(() => User)
+  // @IsOptional()
+  // @Column(() => User)
   // user: User['id'];
+
+  @ApiProperty()
+  @IsInt()
+  @Column({ nullable: true })
+  userAccountId: number;
+  @ManyToOne(() => User, { cascade: true })
+  @JoinColumn({ name: 'userAccountId' })
+  user: User;
 }
