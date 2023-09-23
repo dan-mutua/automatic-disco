@@ -11,6 +11,7 @@ export class NotificationService {
   constructor(
     @Inject('NOTIFICATION_REPOSITORY')
     private notificationRepository: Repository<Notification>,
+    @Inject('USER_REPOSITORY')
     private readonly userRepository: Repository<User>,
     private readonly mailerService: MailerService,
     // private readonly bull: BullMQ,

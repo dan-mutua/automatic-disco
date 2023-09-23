@@ -5,9 +5,9 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
 import { Global } from '@nestjs/common';
 import { DatabaseModule } from 'src/database/database.module';
 import { notificationProviders } from './notification.provider';
-import { NotificationService } from './notification.service';
 import { NotificationController } from './notification.controller';
 import { ConfigModule } from '@nestjs/config';
+import { BullModule } from '@nestjs/bull';
 
 @Global()
 @Module({
@@ -35,10 +35,17 @@ import { ConfigModule } from '@nestjs/config';
         },
       },
     }),
+
+    BullModule.forRoot({
+      redis: {
+        host: 'localhost',
+        port: 6379,
+      },
+    }),
   ],
   controllers: [NotificationController],
 
-  providers: [...notificationProviders, NotificationService],
-  exports: [NotificationService, ...notificationProviders],
+  providers: [...notificationProviders],
+  exports: [...notificationProviders],
 })
 export class NotificationsModule {}
