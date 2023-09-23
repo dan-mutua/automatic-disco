@@ -1,5 +1,3 @@
-// notification.worker.ts
-
 import { Process, Processor } from '@nestjs/bull';
 import { Logger } from '@nestjs/common';
 import { Job } from 'bull';

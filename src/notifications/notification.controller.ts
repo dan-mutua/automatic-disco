@@ -1,56 +1,53 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Inject,
-  Injectable,
-  Param,
-  Post,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body } from '@nestjs/common';
 import { NotificationService } from './notification.service';
-import { MailerService } from '@nestjs-modules/mailer';
-import { User, countryCode } from 'src/users/entities/user.entity';
+import { Notification } from './notification.entity';
+import { CreateNotificationDto } from './create-notification.dto'; // You need to create this DTO
+
+// Import decorators from @nestjs/swagger
+import {
+  ApiTags,
+  ApiResponse,
+  ApiOperation,
+  ApiCreatedResponse,
+} from '@nestjs/swagger';
 
 @Controller('notifications')
-@Injectable()
+@ApiTags('Notifications') // Add a tag for your controller
 export class NotificationController {
-  constructor(
-    @Inject('NOTIFICATION_SERVICE')
-    private readonly notificationService: NotificationService,
-    private readonly mailerService: MailerService,
-  ) {}
+  constructor(private readonly notificationService: NotificationService) {}
 
-  @Post()
+  @Post('create')
+  @ApiOperation({ summary: 'Create a notification' })
+  @ApiCreatedResponse({
+    description: 'The notification has been successfully created.',
+  })
   async createNotification(
-    @Body()
-    notification: {
-      title: string;
-      message: string;
-      roleFilter?: string;
-      countryFilter?: countryCode;
-    },
+    @Body() createNotificationDto: CreateNotificationDto,
   ): Promise<void> {
+    const { title, message, roleFilter, countryFilter } = createNotificationDto;
+
     await this.notificationService.createNotification(
-      notification.title,
-      notification.message,
-      notification.roleFilter,
-      notification.countryFilter,
+      title,
+      message,
+      roleFilter,
+      countryFilter,
     );
   }
 
-  // @Get()
-  // async findAllNotifications(): Promise<Notification[]> {
-  //   return await this.notificationService.findAllNotifications();
-  // }
+  @Get()
+  @ApiOperation({ summary: 'Get all notifications' })
+  @ApiResponse({ status: 200, description: 'Returns all notifications.' })
+  async findAllNotifications(): Promise<Notification[]> {
+    return this.notificationService.findAllNotifications();
+  }
 
-  @Get('users/:role/:country')
-  async getUsersByRoleAndCountry(
-    @Param('role') role: string,
-    @Param('country') country: string,
-  ): Promise<User[]> {
-    return await this.notificationService.getUsersByRoleAndCountry(
-      role,
-      country,
-    );
+  @Get('report')
+  @ApiOperation({ summary: 'Generate a notification report' })
+  @ApiResponse({
+    status: 200,
+    description: 'Returns a notification report as a string.',
+  })
+  async generateNotificationReport(): Promise<string> {
+    return this.notificationService.generateNotificationReport();
   }
 }

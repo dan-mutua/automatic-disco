@@ -13,8 +13,10 @@ async function bootstrap() {
 
   // Open API
   const options = new DocumentBuilder()
-    .setTitle('a rest api for pims-sps')
-    .setDescription('a nestjs api for sps-pims portal ')
+    .setTitle('Email Service API')
+    .setDescription(
+      'The Email Service API provides a comprehensive set of endpoints for sending emails and generating email reports. This RESTful API allows you to seamlessly integrate email functionality into your applications, making it easy to send transactional emails, automate email campaigns, and monitor email performance. With robust features and detailed reporting, you can ensure the delivery of emails and gain insights into their engagement ',
+    )
     .setVersion('1.0.0')
     .addTag('nestjsapi')
     .build();

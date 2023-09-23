@@ -55,18 +55,29 @@ export class NotificationService {
     return await this.notificationRepository.find();
   }
 
-  async getUsersByRoleAndCountry(
-    role: string,
-    country: string,
-  ): Promise<User[]> {
-    const users = await this.userRepository
-      .createQueryBuilder('user')
-      .where('user.role = :role', { role })
-      .andWhere('user.country = :country', { country })
-      .getMany();
+  async generateNotificationReport(): Promise<string> {
+    try {
+      const notifications = await this.notificationRepository.find();
 
-    return users;
+      // Create a report
+      let report = `Notification Report (${new Date().toLocaleString()}):\n\n`;
+      notifications.forEach((notification, index) => {
+        report += `Notification ${index + 1}:\n`;
+        report += `Title: ${notification.title}\n`;
+        report += `Message: ${notification.message}\n`;
+        report += `Receiver: ${notification.receiver}\n`;
+        report += '-----------------\n';
+      });
+
+      // You can log the report or save it to a file
+      // For now, let's just return it as a string
+      return report;
+    } catch (error) {
+      console.error('Error generating notification report:', error);
+      throw error;
+    }
   }
+
   async sendEmailNotification(
     notification: Notification,
     receiverUser: User,
@@ -81,23 +92,4 @@ export class NotificationService {
       console.error('Error sending email:', error);
     }
   }
-  // async sendEmailNotification(
-  //   notification: Notification,
-  //   receiverUser: User,
-  // ): Promise<void> {
-  //   try {
-  //     await this.mailerService.sendMail({
-  //       to: receiverUser.email,
-  //       subject: notification.title,
-  //       text: notification.message,
-  //     });
-  //      await this.notificationRepository.update({
-  //        id: notification.id,
-  //        sent: true,
-  //      });
-
-  //   } catch (error) {
-  //     console.error('Error sending email:', error);
-  //   }
-  // }
 }

@@ -4,7 +4,6 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { DatabaseModule } from './database/database.module';
 import { SwaggerModule } from '@nestjs/swagger';
-import { DocumentsMModule } from './documents-m/documents-m.module';
 import { AuthModule } from './auth/auth.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { BullModule } from '@nestjs/bull';
@@ -16,7 +15,6 @@ import { NotificationWorker } from './notifications/notification.worker';
     UsersModule,
     DatabaseModule,
     SwaggerModule,
-    DocumentsMModule,
     AuthModule,
     NotificationsModule,
     BullModule.registerQueue({
